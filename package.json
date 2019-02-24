@@ -1,19 +1,16 @@
 {
   "name": "namebin",
-  "version": "1.0.0",
-  "description": "Software Engineering Challenge",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/caviidae/namebin.git"
-  },
-  "author": "Abdullah Hadi",
-  "license": "WTFPL",
-  "bugs": {
-    "url": "https://github.com/caviidae/namebin/issues"
-  },
-  "homepage": "https://github.com/caviidae/namebin#readme"
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0"
+  }
 }
