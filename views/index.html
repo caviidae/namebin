@@ -4,27 +4,44 @@
     <link rel='stylesheet'href='/stylesheets/style.css'/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="/javascripts/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body class="index">
-    <h1>namebin</h1>
-    <div class="col">
-      <form id="form">
-          <input type="text" placeholder="first name" id="firstname" name="firstname"/><br/>
-          <input type="text" placeholder="last name" id="lastname" name="lastname"/><br/>
-          <button id="send">Send</button>
-      </form>
-      <pre id="log"></pre>
-    </div>
-    <div class="col">
-      <table id="results">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Number</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div class="container-fluid main">
+      <div class="row">
+        <div class="col">
+          <h1>namebin</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id="form" class="">
+            <div class="row">
+              <div class="form-group col">
+                <input type="text" class="form-control form-control-sm" placeholder="Please enter your first name" id="firstname" name="firstname"/>
+              </div>
+              <div class="form-group col">
+                <input type="text" class="form-control form-control-sm" placeholder="Please enter your last name" id="lastname" name="lastname"/>
+              </div>
+            </div>
+            <div class="form-group text-right">
+              <button id="send" type="submit" class="btn btn-sm btn-primary">Get my magic number</button>
+            </div>
+          </form>
+          <pre id="log" class="border rounded"></pre>
+        </div>
+        <div class="col">
+          <table class="table" id="results">
+            <thead class="thead-dark">
+              <tr>
+                <th>Name</th>
+                <th>Number</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </body>
 </html>
