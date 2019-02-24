@@ -7,11 +7,24 @@
   </head>
   <body class="index">
     <h1>namebin</h1>
-    <form id="form">
-        <input type="text" placeholder="first name" id="firstname" name="firstname"/><br/>
-        <input type="text" placeholder="last name" id="lastname" name="lastname"/><br/>
-        <button id="send">Send</button>
-    </form>
-    <pre id="log"></pre>
+    <div class="col">
+      <form id="form">
+          <input type="text" placeholder="first name" id="firstname" name="firstname"/><br/>
+          <input type="text" placeholder="last name" id="lastname" name="lastname"/><br/>
+          <button id="send">Send</button>
+      </form>
+      <pre id="log"></pre>
+    </div>
+    <div class="col">
+      <table id="results">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Number</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </body>
 </html>

@@ -29,24 +29,39 @@
         init: function() {
           // JavaScript to be fired on the home page
           $('#send').click(function(){
-            /*if (!$('#firstname').val() || !$('#lastname').val()) {
+            var firstname = $('#firstname').val();
+            var lastname = $('#lastname').val();
+
+            if (!firstname || !lastname) {
               $('#log').append("Please enter your first and last names\n");
               return false;
-            }*/
+            }
 
             $('#log').append("Sending your name for processing\n");
             $.post({
               url: '/process',
               dataType: 'json',
               data: {
-                firstname: $('#firstname').val(),
-                lastname: $('#lastname').val()
+                firstname: firstname,
+                lastname: lastname
               },
               success: function(data, status, xhr) {
-                alert(JSON.stringify(data));
+                if (typeof data === 'object') {
+                  if (data.success) {
+                    $('#log').append("Success: Your magic number is " + data.value + "\n");
+                    $tr = $('<tr/>');
+                    $tr.append($('<td/>').text(firstname + ' ' + lastname));
+                    $tr.append($('<td/>').text(data.value));
+                    $('#results tbody').append($tr);
+                  } else {
+                    $('#log').append("Error: " + data.error + "\n");
+                  }
+                } else {
+                  $('#log').append("Error: Did not receive valid JSON\n");
+                }
               },
               error: function(xhr, status, error) {
-                alert(JSON.stringify(status));
+                $('#log').append("XHR Error: "+status+"\n");
               },
             });
 
