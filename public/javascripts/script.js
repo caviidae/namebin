@@ -27,6 +27,36 @@
       // Home page
       'index': {
         init: function() {
+
+          // Get names from db on page load
+          $.post({
+            url: '/getNames',
+            dataType: 'json',
+            success: function(data, status, xhr) {
+              if (typeof data === 'object') {
+                if (data.success) {
+                  $('#log').append("Success: Retrieved existing records from DB\n");
+                  if (data.names.length) {
+                    for (var i=0; i < data.names.length; i++) {
+                      var record = data.names[i];
+                      $tr = $('<tr/>');
+                      $tr.append($('<td/>').text(record.firstname + ' ' + record.lastname));
+                      $tr.append($('<td/>').append($('<button/>').addClass('retrieve').text('Get')));
+                      $('#results tbody').append($tr);
+                    }
+                  }
+                } else {
+                  $('#log').append("Error: " + data.error + "\n");
+                }
+              } else {
+                $('#log').append("Error: Did not receive valid JSON\n");
+              }
+            },
+            error: function(xhr, status, error) {
+              $('#log').append("XHR Error: "+status+"\n");
+            },
+          });
+
           // JavaScript to be fired on the home page
           $('#send').click(function(){
             var firstname = $('#firstname').val();

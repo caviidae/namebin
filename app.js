@@ -8,6 +8,19 @@ var bodyParser = require('body-parser')
 
 var indexRouter = require('./routes/index');
 
+var mongo = require('mongodb').MongoClient;
+var mongoString = "mongodb://localhost:27017/";
+
+mongo.connect(mongoString, { useNewUrlParser: true }, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db('namedb');
+  dbo.createCollection("names", function(err, res) {
+    if (err) throw err;
+    console.log("Collection created");
+    db.close();
+  });
+});
+
 var app = express();
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
