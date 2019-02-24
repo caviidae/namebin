@@ -40,8 +40,13 @@
                     for (var i=0; i < data.names.length; i++) {
                       var record = data.names[i];
                       $tr = $('<tr/>');
-                      $tr.append($('<td/>').text(record.firstname + ' ' + record.lastname));
-                      $tr.append($('<td/>').append($('<button/>').addClass('retrieve').text('Get')));
+                      $nameCol = $('<td/>').attr('id', record._id);
+                      $nameCol.append($('<span/>').text(record.firstname));
+                      $nameCol.append(' ');
+                      $nameCol.append($('<span/>').text(record.lastname));
+                      $tr.append($nameCol);
+                      $tr.append($('<td/>').append($('<button/>').addClass('retrieve btn btn-sm btn-success').text('Get')));
+                      $tr.append($('<td/>').append($('<button/>').addClass('delete btn btn-sm btn-danger').text('Delete')));
                       $('#results tbody').append($tr);
                     }
                   }
@@ -55,6 +60,74 @@
             error: function(xhr, status, error) {
               $('#log').append("XHR Error: "+status+"\n");
             },
+          });
+
+          $('#results').on('click', '.delete', function(e){
+            var $row = $(e.target).parents('tr');
+            var id = $('td', $row).first().attr('id');
+
+            $('#log').append("Sending the id for deletion\n");
+            $.post({
+              url: '/delete',
+              dataType: 'json',
+              data: {
+                id: id
+              },
+              success: function(data, status, xhr) {
+                if (typeof data === 'object') {
+                  if (data.success) {
+                    $('#log').append("Success: Deleted the record\n");
+                    $row.fadeOut("normal", function() {
+                      $(this).remove();
+                    });
+                  } else {
+                    $('#log').append("Error: " + data.error + "\n");
+                  }
+                } else {
+                  $('#log').append("Error: Did not receive valid JSON\n");
+                }
+              },
+              error: function(xhr, status, error) {
+                $('#log').append("XHR Error: "+status+"\n");
+              },
+            });
+
+            return false;
+          });
+
+          $('#results').on('click', '.retrieve', function(e){
+            var $row = $(e.target).parents('tr');
+            var firstname = $('span', $('td', $row).first()).first().text();
+            var lastname = $('span', $('td', $row).first()).last().text();
+
+            $('#log').append("Sending the name for processing\n");
+            $.post({
+              url: '/process',
+              dataType: 'json',
+              data: {
+                firstname: firstname,
+                lastname: lastname,
+                save: false
+              },
+              success: function(data, status, xhr) {
+                if (typeof data === 'object') {
+                  if (data.success) {
+                    $('#log').append("Success: Their magic number is " + data.value + "\n");
+                    $('td:nth-child(2)', $row).text(data.value);
+                    $('#results tbody').append($tr);
+                  } else {
+                    $('#log').append("Error: " + data.error + "\n");
+                  }
+                } else {
+                  $('#log').append("Error: Did not receive valid JSON\n");
+                }
+              },
+              error: function(xhr, status, error) {
+                $('#log').append("XHR Error: "+status+"\n");
+              },
+            });
+
+            return false;
           });
 
           // JavaScript to be fired on the home page

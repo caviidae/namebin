@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var ObjectId = require('mongodb').ObjectID;
 var mongo = require('mongodb').MongoClient;
 var mongoString = "mongodb://localhost:27017/";
 
@@ -22,7 +23,6 @@ function maxConsecutive(haystack, needle) {
   if (typeof needle === 'number') {
     needle = needle.toString();
   }
-  console.log(haystack);
   var max = 0;
   var current = 0;
   for (var i=0; i<haystack.length; i++) {
@@ -54,25 +54,42 @@ router.post('/getNames', function(req, res, next) {
   });
 });
 
+router.post('/delete', function(req, res, next) {
+  if (!req.body.id) {
+    return res.json({success: false, error: 'ID missing'});
+  }
+
+  mongo.connect(mongoString, { useNewUrlParser: true }, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("namedb");
+    dbo.collection("names").deleteOne({'_id': ObjectId(req.body.id)}, function(err, result) {
+      if (err) throw err;
+      console.log('Document deleted');
+      return res.json({success: true});
+      db.close();
+    });
+  });
+});
+
 router.post('/process', function(req, res, next) {
   if (!req.body.firstname || !req.body.lastname) {
     return res.json({success: false, error: 'First or last name missing'});
   }
 
-  mongo.connect(mongoString, { useNewUrlParser: true }, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db('namedb');
-    dbo.collection('names').insertOne({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname
-    }, function(err, res) {
+  if (req.body.save === undefined || req.body.save === true) {
+    mongo.connect(mongoString, { useNewUrlParser: true }, function(err, db) {
       if (err) throw err;
-      console.log("Name inserted");
-      db.close();
+      var dbo = db.db('namedb');
+      dbo.collection('names').insertOne({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname
+      }, function(err, res) {
+        if (err) throw err;
+        console.log("Name inserted");
+        db.close();
+      });
     });
-  });
-
-
+  }
 
   var sum = asciiSum(req.body.firstname, req.body.lastname);
 
