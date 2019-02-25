@@ -83,21 +83,29 @@ router.post('/process', function(req, res, next) {
       dbo.collection('names').insertOne({
         firstname: req.body.firstname,
         lastname: req.body.lastname
-      }, function(err, res) {
+      }, function(err, obj) {
         if (err) throw err;
         console.log("Name inserted");
         db.close();
+        var sum = asciiSum(req.body.firstname, req.body.lastname);
+
+        var bin = sum.toString(2); // Binary value
+      
+        var consecutive_zeros = maxConsecutive(bin, 0);
+      
+        return res.json({success: true, value: consecutive_zeros, id: obj.insertedId});
       });
     });
+  } else {
+    var sum = asciiSum(req.body.firstname, req.body.lastname);
+
+    var bin = sum.toString(2); // Binary value
+  
+    var consecutive_zeros = maxConsecutive(bin, 0);
+  
+    return res.json({success: true, value: consecutive_zeros});
   }
 
-  var sum = asciiSum(req.body.firstname, req.body.lastname);
-
-  var bin = sum.toString(2); // Binary value
-
-  var consecutive_zeros = maxConsecutive(bin, 0);
-
-  return res.json({success: true, value: consecutive_zeros});
 });
 
 module.exports = router;

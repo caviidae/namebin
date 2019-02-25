@@ -153,8 +153,10 @@
                   if (data.success) {
                     $('#log').append("Success: Your magic number is " + data.value + "\n");
                     $tr = $('<tr/>');
-                    $tr.append($('<td/>').text(firstname + ' ' + lastname));
+                    $tr.append($('<td/>').text(firstname + ' ' + lastname).attr('id', data.id));
                     $tr.append($('<td/>').text(data.value));
+                    $tr.append($('<td/>').append($('<button/>').addClass('delete btn btn-sm btn-danger').text('Delete')));
+                      $('#results tbody').append($tr);
                     $('#results tbody').append($tr);
                   } else {
                     $('#log').append("Error: " + data.error + "\n");
