@@ -5,11 +5,6 @@ var ObjectId = require('mongodb').ObjectID;
 var mongo = require('mongodb').MongoClient;
 var mongoString = "mongodb://localhost:27017/";
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index.html');
-});
-
 function asciiSum(fn, ln) {
   var name = fn + ' ' + ln;
   var sum = 0;
@@ -40,6 +35,12 @@ function maxConsecutive(haystack, needle) {
   }
   return max;
 }
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index.html');
+});
+
 
 router.post('/getNames', function(req, res, next) {
   var result;
